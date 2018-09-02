@@ -1,9 +1,22 @@
-OUTPUT_FORMAT(elf32-i386)
-ENTRY(start)
-SECTIONS
- {
-   . = 0x100000;
-   .text : { *(.text) }
-   .data : { *(.data) }
-   .bss  : { *(.bss)  }
+ENTRY(boot)
+OUTPUT_FORMAT("binary")
+SECTIONS {
+    . = 0x7c00;
+    .text :
+    {
+        *(.boot)
+        *(.text)
+    }
+    .rodata :
+    {
+        *(.rodata)
+    }
+    .data :
+    {
+        *(.data)
+    }
+    .bss :
+    {
+        *(.bss)
+    }
 }
