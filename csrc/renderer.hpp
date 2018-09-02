@@ -6,6 +6,7 @@
 #define SCREEN_SIZE SCREEN_WIDTH * SCREEN_HEIGHT
 
 void drawRect(int x, int y, int w, int h, int color);
+void drawHome(void);
 void clearScreen(void);
 
 #endif

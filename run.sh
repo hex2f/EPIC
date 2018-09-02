@@ -1,5 +1,5 @@
 echo "=== EPIC Kernel ==="
-echo "    Version 0.2    "
+echo "  Running in QEMU  "
 echo "==================="
 
 qemu-system-x86_64 -fda out/kernel.bin

@@ -1,4 +1,5 @@
 #include "renderer.hpp"
+#include "charmap.hpp"
 
 void drawRect(int ox, int oy, int h, int w, int color) {
 	char* vga = (char*)0xA0000;
@@ -14,6 +15,10 @@ void drawRect(int ox, int oy, int h, int w, int color) {
         }
     	i += SCREEN_WIDTH - w - ox;
     }
+}
+
+void drawHome() {
+	drawEPIC(2, 12, 12);
 }
 
 

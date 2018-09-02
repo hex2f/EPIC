@@ -22,3 +22,4 @@ gcc -m64 \
 
 
 echo "Successfully built EPIC Kernel v0.2"
+echo " "
