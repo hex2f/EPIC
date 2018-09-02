@@ -3,26 +3,12 @@ echo "    Version 0.2    "
 echo "==================="
 
 echo Assembling bootloader.asm...
-nasm -f bin asmsrc/bootloader.asm -o out/basm.bin
+nasm -f elf32 asmsrc/bootloader.asm -o out/basm.o
 
-# echo Compiling kernel.c ...
-# gcc -m32 -c csrc/kernel.c -o out/kernelc.o
-
-# echo Compiling keyboard.c ...
-# gcc -m32 -c csrc/keyboard.c -o out/keyboardc.o
-
-# echo Compiling renderer.c ...
-# gcc -m32 -c csrc/renderer.c -o out/rendererc.o
-
-# echo Compiling esh.c ...
-# gcc -m32 -c csrc/esh.c -o out/eshc.o
-
-# echo Linking...
-# ld -m elf_i386 -T link.ld -o out/kernel \
-#	out/kasm.o \
-#	out/kernelc.o \
-#	out/keyboardc.o \
-#	out/rendererc.o \
-#	out/eshc.o \
+echo Compiling C++...
+gcc -m64 \
+	csrc/bootloader.cpp\
+	out/basm.o\
+	-o kernel.bin -nostdlib -ffreestanding -std=c++11 -mno-red-zone -fno-exceptions -nostdlib -fno-rtti -Wall -Wextra -Werror -T link.ld
 
 echo "Successfully built EPIC Kernel v0.2"
