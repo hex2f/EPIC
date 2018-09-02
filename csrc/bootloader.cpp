@@ -1,7 +1,14 @@
-extern "C" void kmain() {
-    const short color = 0x0F00;
-    const char* hello = "Hello cpp world!";
-    short* vga = (short*)0xb8000;
-    for (int i = 0; i<16;++i)
-        vga[i+80] = color | hello[i];
+#include "bootloader.hpp"
+#include "renderer.hpp"
+
+extern "C" void main() {
+	drawRect(110, 50, 100, 100, 17);
+
+	drawRect(120, 60, 80, 80, 0);
+
+	drawRect(135, 75, 20, 20, 14);
+	drawRect(165, 75, 20, 20, 13);
+
+	drawRect(135, 105, 20, 20, 12);
+	drawRect(165, 105, 20, 20, 11);
 }

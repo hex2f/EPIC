@@ -5,7 +5,7 @@ boot:
 	mov ax, 0x2401
 	int 0x15
 
-	mov ax, 0x3
+	mov ax, 0x13
 	int 0x10
 
 	mov [disk],dl
@@ -59,7 +59,7 @@ times 510 - ($-$$) db 0
 dw 0xaa55
 copy_target:
 bits 32
-	hello: db "Hello more than 512 bytes world!!",0
+	hello: db "Successfully loaded stage 2",0
 boot2:
 	mov esi,hello
 	mov ebx,0xb8000
@@ -73,8 +73,8 @@ boot2:
 	jmp .loop
 halt:
 	mov esp,kernel_stack_top
-	extern kmain
-	call kmain
+	extern main
+	call main
 	cli
 	hlt
 
