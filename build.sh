@@ -1,28 +1,24 @@
 echo "=== EPIC Kernel ==="
-echo "    Version 0.1    "
+echo "    Version 0.2    "
 echo "==================="
 
-echo Assembling...
-nasm -f elf32 asmsrc/kernel.asm -o out/kasm.o
+echo Assembling bootloader.asm...
+nasm -f elf64 asmsrc/bootloader.asm -o out/basm.o
 
-echo Compiling kernel.c ...
-gcc -m32 -c csrc/kernel.c -o out/kernelc.o
+csrc=""
 
-echo Compiling keyboard.c ...
-gcc -m32 -c csrc/keyboard.c -o out/keyboardc.o
+for F in `find ./csrc -type f`
+do
+	echo Adding $(basename ${F})...
+	csrc="$csrc ${F}"
+done
 
-echo Compiling renderer.c ...
-gcc -m32 -c csrc/renderer.c -o out/rendererc.o
+echo Adding basm.o
+csrc="$csrc ./out/basm.o"
 
-echo Compiling esh.c ...
-gcc -m32 -c csrc/esh.c -o out/eshc.o
+gcc -m64 \
+	${csrc}\
+	-o out/kernel.bin -nostdlib -ffreestanding -std=c++11 -mno-red-zone -fno-exceptions -nostdlib -fno-rtti -Wall -Wextra -Werror -T link.ld
 
-echo Linking...
-ld -m elf_i386 -T link.ld -o out/kernel \
-	out/kasm.o \
-	out/kernelc.o \
-	out/keyboardc.o \
-	out/rendererc.o \
-	out/eshc.o \
 
-echo "Successfully built EPIC Kernel v0.1"
+echo "Successfully built EPIC Kernel v0.2"
