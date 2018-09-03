@@ -5,7 +5,7 @@
 #define SCREEN_HEIGHT 200
 #define SCREEN_SIZE SCREEN_WIDTH * SCREEN_HEIGHT
 
-void drawRect(int x, int y, int w, int h, int color);
+void drawRect(int ox, int oy, int w, int h);
 void drawHome(void);
 void clearScreen(void);
 

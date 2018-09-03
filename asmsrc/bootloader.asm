@@ -77,7 +77,7 @@ halt:
 	call main
 	cli
 	hlt
-
+	
 section .bss
 align 4
 kernel_stack_bottom: equ $

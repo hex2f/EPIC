@@ -1,7 +1,7 @@
 #include "renderer.hpp"
-#include "charmap.hpp"
+#include "epicfont.hpp"
 
-void drawRect(int ox, int oy, int h, int w, int color) {
+void drawRect(int ox, int oy, int h, int w) {
 	char* vga = (char*)0xA0000;
 
     int x, y, i;
@@ -11,14 +11,15 @@ void drawRect(int ox, int oy, int h, int w, int color) {
     for (y = 0; y < h; y++) {
     	i += ox;
         for (x = 0; x < w; x++) {
-        	vga[i++] = color;
+        	vga[i++] = 0xf;
         }
     	i += SCREEN_WIDTH - w - ox;
     }
 }
 
 void drawHome() {
-	drawEPIC(2, 12, 12);
+	char str[] = "epic";
+	ef_drawText(str, 1, 0);
 }
 
 
