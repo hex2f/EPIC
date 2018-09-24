@@ -4,9 +4,18 @@
 #define SCREEN_WIDTH  320
 #define SCREEN_HEIGHT 200
 #define SCREEN_SIZE SCREEN_WIDTH * SCREEN_HEIGHT
+#define VGA 0x000A0000
 
-void drawRect(int ox, int oy, int w, int h);
-void drawHome(void);
-void clearScreen(void);
+namespace Renderer {
 
+	struct bitmap {
+		unsigned int h;
+		unsigned int w;
+		char data[];
+	};
+
+	void drawRect(unsigned int ox, unsigned int oy, unsigned int w, unsigned int h);
+	void drawHome(void);
+	void clearScreen(void);
+}
 #endif

@@ -8,17 +8,34 @@ boot:
 	mov ax, 0x13
 	int 0x10
 
+	mov ah, 0 	; initialize port service
+	mov al, 0xE3; line settings = 9600, 8, N, 1
+	xor dx, dx 	; port = COM1
+	int 0x14 	; BIOS serial port services
+
+	mov edi, 0xA0000	;yellow pixel to indicate booting
+	mov al, 0x0E
+	mov [edi], al
+
 	mov [disk],dl
 
 	mov ah, 0x2    ;read sectors
-	mov al, 6      ;sectors to read
+	mov al, 8      ;sectors to read
 	mov ch, 0      ;cylinder idx
 	mov dh, 0      ;head idx
 	mov cl, 2      ;sector idx
 	mov dl, [disk] ;disk idx
 	mov bx, copy_target;target pointer
 	int 0x13
+
+	mov edi, 0xA0000	;blue pixel to indicate disk read success
+	mov al, 0x09
+	mov [edi], al
+
+	extern bootloadermain
+	call bootloadermain
 	cli
+
 	lgdt [gdt_pointer]
 	mov eax, cr0
 	or eax,0x1
@@ -59,27 +76,35 @@ times 510 - ($-$$) db 0
 dw 0xaa55
 copy_target:
 bits 32
-	hello: db "Successfully loaded stage 2",0
+
+global read_port
+global write_port
+
+read_port:
+	mov edx, [esp + 4]
+									;al is the lower 8 bits of eax
+	in al, dx						;dx is the lower 16 bits of edx
+	ret
+write_port:
+	mov   edx, [esp + 4]
+	mov   al, [esp + 4 + 4]
+	out   dx, al
+
+	ret
+
 boot2:
-	mov esi,hello
-	mov ebx,0xb8000
-.loop:
-	lodsb
-	or al,al
-	jz halt
-	or eax,0x0F00
-	mov word [ebx], ax
-	add ebx,2
-	jmp .loop
+	mov edi, 0xA0000	;green pixel to indicate success
+	mov al, 0x0A
+	mov [edi], al
 halt:
 	mov esp,kernel_stack_top
-	extern main
-	call main
+	extern kernelmain
+	call kernelmain
 	cli
 	hlt
-	
+
 section .bss
 align 4
 kernel_stack_bottom: equ $
-	resb 16384 ; 16 KB
+	resb 65536 ; 64 KiB
 kernel_stack_top:

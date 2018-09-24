@@ -1,36 +1,54 @@
 #include "renderer.hpp"
-#include "epicfont.hpp"
+namespace Renderer {
 
-void drawRect(int ox, int oy, int h, int w) {
-	char* vga = (char*)0xA0000;
+    void drawRect(unsigned int ox, unsigned int oy, unsigned int h, unsigned int w) {
+        char* vga = (char*)VGA;
+        unsigned int x, y, o;
 
-    int x, y, i;
+        o = (SCREEN_WIDTH * oy) + ox;
 
-    i = oy * SCREEN_WIDTH;
-
-    for (y = 0; y < h; y++) {
-    	i += ox;
-        for (x = 0; x < w; x++) {
-        	vga[i++] = 0xf;
+        for (y = 0; y < h; y++) {
+            for (x = 0; x < w; x++) {
+            	vga[(o + (SCREEN_WIDTH * y) + x)+1] = 0xF;
+            }
         }
-    	i += SCREEN_WIDTH - w - ox;
     }
-}
 
-void drawHome() {
-	char str[] = "epic";
-	ef_drawText(str, 1, 0);
-}
+    void drawBitmap (unsigned int ox, unsigned int oy) {
+        char* vga = (char*)VGA;
+        oy++;
+        ox++;
+        unsigned int x = 0;
+        unsigned int y = 0;
+
+    	while (y < 10) {
+            x = 0;
+            while (x < 4) {
+                vga[SCREEN_WIDTH * y + x] = 0x3;
+                x++;
+            }
+            y++;
+        }
+    }
+
+    void drawHome() {
+    	// static char str[] = "abcdefghijklmnopqrstuvwxyz";
+    	// ef_drawText(str, 136, 86, 4, 0);
+    	// STDFont::drawText(str, 2, 2, 2, 4);
+        clearScreen();
+
+    	drawBitmap(10, 10);
+        drawRect(30, 40, 10, 40);
+    }
 
 
-void clearScreen() {
-	char* vga = (char*)0xA0000;
+    void clearScreen() {
+        char* vga = (char*)VGA;
+        unsigned int i = 0;
 
-    int x, y, i;
-
-    for (y = 0; y < SCREEN_HEIGHT; y++) {
-        for (x = 0; x < SCREEN_WIDTH; x++) {
-        	vga[i++] = 0x0;
+        while (i <= SCREEN_SIZE) {
+            vga[i] = 0x9;
+            i++;
         }
     }
 }

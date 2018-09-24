@@ -1,6 +1,6 @@
 #include "bootloader.hpp"
-#include "renderer.hpp"
+#include <stdio.h>
 
-extern "C" void main() {
-	drawHome();
+extern "C" void bootloadermain() {
+
 }
