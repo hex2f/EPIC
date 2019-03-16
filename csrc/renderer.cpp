@@ -1,30 +1,22 @@
 #include "renderer.hpp"
 
-void drawRect(int ox, int oy, int h, int w, int color) {
-	char* vga = (char*)0xA0000;
-
-    int x, y, i;
-
-    i = oy * SCREEN_WIDTH;
+void drawRect(unsigned int ox, unsigned int oy, unsigned int h, unsigned int w, char color) {
+    unsigned int x, y;
 
     for (y = 0; y < h; y++) {
-    	i += ox;
         for (x = 0; x < w; x++) {
-        	vga[i++] = color;
+        	((char*)0xA0000)[(y+oy)*SCREEN_WIDTH + (x+ox)] = color;
         }
-    	i += SCREEN_WIDTH - w - ox;
     }
 }
 
 
 void clearScreen() {
-	char* vga = (char*)0xA0000;
-
-    int x, y, i;
+    unsigned int x, y;
 
     for (y = 0; y < SCREEN_HEIGHT; y++) {
         for (x = 0; x < SCREEN_WIDTH; x++) {
-        	vga[i++] = 0x0;
+        	((char*)0xA0000)[y*SCREEN_WIDTH + x] = 0x1;
         }
     }
 }

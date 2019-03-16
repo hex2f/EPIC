@@ -81,5 +81,5 @@ halt:
 section .bss
 align 4
 kernel_stack_bottom: equ $
-	resb 16384 ; 16 KB
+	resb 1048579 ; 1 MiB
 kernel_stack_top:
